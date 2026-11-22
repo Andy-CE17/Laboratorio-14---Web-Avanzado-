@@ -39,3 +39,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local caches, reports and private credentials
+/.turbo/
+/dist/
+/tmp/
+/output/
+/playwright-report/
+/test-results/
+*.key
+*.p12
+*.pfx
+.supabase-password
+.duckdns-token
+*-password.local
+*-token.local

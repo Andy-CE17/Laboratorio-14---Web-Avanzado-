@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portafolio de Andy Campos Escandón
 
-## Getting Started
+Portafolio personal para el laboratorio 14 de Desarrollo de Aplicaciones Web Avanzado en Tecsup. Desarrollado con Next.js App Router, TypeScript y Tailwind CSS.
 
-First, run the development server:
+## Contenido
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+- Inicio con presentación personal.
+- Sobre mí y formación en Diseño y Desarrollo de Software.
+- Habilidades de desarrollo web y móvil.
+- Proyectos MELACAMPOS, CINÉTICA y UMBRAL, con fichas individuales.
+- Contacto con validación de campos y preparación de un correo dirigido a Andy.
+- Metadatos por página, Open Graph, sitemap y robots.txt.
+
+El formulario utiliza `mailto:`: abre el cliente de correo del visitante para que confirme el envío. No envía mensajes desde un servidor ni requiere contraseñas de correo.
+
+## Desarrollo local
+
+```sh
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Validación
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+pnpm lint
+pnpm build
+pnpm start
+```
 
-## Learn More
+## Despliegue y SEO
 
-To learn more about Next.js, take a look at the following resources:
+El despliegue se realiza en Vercel. La variable pública opcional `NEXT_PUBLIC_SITE_URL` define el dominio definitivo para los metadatos, el sitemap y robots.txt. Si no está configurada, se usa el dominio de producción proporcionado por Vercel; en local se usa http://localhost:3000.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Los archivos de entorno, credenciales, dependencias y resultados de compilación están excluidos de Git.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Recursos gráficos
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Los logotipos de tecnologías proceden de Devicon, Simple Icons y Auth.js. Los iconos de categorías son de Icons8, con atribución visible en Habilidades. Las fuentes y créditos se encuentran en `public/icons/credits.txt`. La foto fue proporcionada por Andy; el recorte y el paisaje se prepararon para este portafolio, con detalles en `public/images/credits.txt`.

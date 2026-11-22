@@ -1,0 +1,11 @@
+Logotipos de React, Next.js, JavaScript, TypeScript, Node.js, Express, PostgreSQL, MongoDB, Tailwind CSS, Supabase, Git, GitHub, Docker, Vercel, Flutter y Android Studio obtenidos del proyecto Devicon, conservando sus formas. Las versiones monocromas se muestran en blanco para su lectura sobre el fondo oscuro.
+Fuente: https://github.com/devicons/devicon/tree/master/icons
+Licencia: https://github.com/devicons/devicon/blob/master/LICENSE
+Las marcas pertenecen a sus respectivos titulares. Su uso identifica las tecnologías utilizadas.
+TMDB: https://github.com/simple-icons/simple-icons/blob/develop/icons/themoviedatabase.svg (Simple Icons, CC0).
+Auth.js: https://authjs.dev/img/logo-sm.png (recurso oficial).
+Iconos de categorías: Icons8, colección 3D Fluency. Se incluye atribución visible en la página Habilidades, de acuerdo con https://icons8.com/license.
+https://img.icons8.com/3d-fluency/94/monitor.png
+https://img.icons8.com/3d-fluency/94/database.png
+https://img.icons8.com/3d-fluency/94/smartphone.png
+https://img.icons8.com/3d-fluency/94/server.png

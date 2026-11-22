@@ -1,0 +1,3 @@
+Retrato: fotografía proporcionada por Andy Campos Escandón.
+andy-cutout.png: recorte de fondo con la herramienta integrada de imágenes; prompt: eliminar únicamente el fondo gris, conservando rostro, cabello, lentes, pose y vestimenta.
+mountain-lake.webp: paisaje generado con la herramienta integrada de imágenes a partir de la referencia de diseño del usuario; prompt: recrear el mismo encuadre de lago turquesa, montañas nevadas y bosque, sin persona, textos, botones ni logotipos.

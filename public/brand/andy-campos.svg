@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="510" height="104" viewBox="0 0 510 104" fill="none" role="img" aria-labelledby="logo-title logo-description">
+  <title id="logo-title">Andy Campos — Desarrollo web y móvil</title>
+  <desc id="logo-description">Monograma tipográfico ac con punto azul, acompañado del nombre Andy Campos.</desc>
+  <g font-family="Inter, Arial, Helvetica, sans-serif">
+    <text x="0" y="78" fill="#F5F8FC" font-size="94" font-weight="700" letter-spacing="-7">ac</text>
+    <circle cx="112" cy="72" r="6" fill="#249EF8"/>
+    <path d="M145 24V82" stroke="#57778B" stroke-opacity=".45"/>
+    <text x="168" y="51" fill="#F5F8FC" font-size="32" font-weight="600" letter-spacing="-1">Andy Campos</text>
+    <text x="170" y="76" fill="#B6CDDD" font-size="10" font-weight="500" letter-spacing="2">DESARROLLO WEB &amp; MÓVIL</text>
+  </g>
+</svg>
