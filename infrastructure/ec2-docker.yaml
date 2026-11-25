@@ -78,7 +78,7 @@ Resources:
         - Key: Laboratory
           Value: "15"
 
-  WebServerV2:
+  WebServerV3:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref LatestAmiId
@@ -114,6 +114,15 @@ Resources:
           dnf install -y docker git
           systemctl enable --now docker
 
+          # La compilacion de Next.js puede superar el 1 GiB disponible en t3.micro.
+          # Un archivo swap de 2 GiB evita que el kernel finalice pnpm por falta de memoria.
+          if [ ! -f /swapfile ]; then
+            fallocate -l 2G /swapfile
+            chmod 600 /swapfile
+            mkswap /swapfile
+          fi
+          swapon /swapfile || true
+
           docker rm -f lab15-web || true
 
           if [ '${ApplicationMode}' = 'portfolio' ]; then
@@ -138,15 +147,15 @@ Resources:
 Outputs:
   InstanceId:
     Description: ID de la instancia EC2.
-    Value: !Ref WebServerV2
+    Value: !Ref WebServerV3
 
   PublicIp:
     Description: Direccion IPv4 publica de la instancia.
-    Value: !GetAtt WebServerV2.PublicIp
+    Value: !GetAtt WebServerV3.PublicIp
 
   ApplicationUrl:
     Description: URL publica de la aplicacion Docker.
-    Value: !Sub http://${WebServerV2.PublicIp}
+    Value: !Sub http://${WebServerV3.PublicIp}
 
   SecurityGroupId:
     Description: ID del grupo de seguridad creado.
