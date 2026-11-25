@@ -78,7 +78,7 @@ Resources:
         - Key: Laboratory
           Value: "15"
 
-  WebServer:
+  WebServerV2:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref LatestAmiId
@@ -105,7 +105,10 @@ Resources:
           set -euxo pipefail
           exec > >(tee /var/log/lab15-bootstrap.log | logger -t user-data -s 2>/dev/console) 2>&1
 
-          sed -i 's/^[[:space:]]*- scripts-user$/  - [scripts-user, always]/' /etc/cloud/cloud.cfg
+          # Amazon Linux 2023 usa un espacio antes de cada modulo de cloud-init.
+          # Normalizamos tanto la entrada original como una posible entrada previa
+          # para que user-data vuelva a ejecutarse correctamente en cada arranque.
+          sed -i -E 's/^[[:space:]]*-[[:space:]]*(scripts-user|\[scripts-user,[[:space:]]*always\])$/ - [scripts-user, always]/' /etc/cloud/cloud.cfg
 
           dnf update -y
           dnf install -y docker git
@@ -135,15 +138,15 @@ Resources:
 Outputs:
   InstanceId:
     Description: ID de la instancia EC2.
-    Value: !Ref WebServer
+    Value: !Ref WebServerV2
 
   PublicIp:
     Description: Direccion IPv4 publica de la instancia.
-    Value: !GetAtt WebServer.PublicIp
+    Value: !GetAtt WebServerV2.PublicIp
 
   ApplicationUrl:
     Description: URL publica de la aplicacion Docker.
-    Value: !Sub http://${WebServer.PublicIp}
+    Value: !Sub http://${WebServerV2.PublicIp}
 
   SecurityGroupId:
     Description: ID del grupo de seguridad creado.
