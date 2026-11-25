@@ -39,3 +39,19 @@ Los archivos de entorno, credenciales, dependencias y resultados de compilación
 ## Recursos gráficos
 
 Los logotipos de tecnologías proceden de Devicon, Simple Icons y Auth.js. Los iconos de categorías son de Icons8, con atribución visible en Habilidades. Las fuentes y créditos se encuentran en `public/icons/credits.txt`. La foto fue proporcionada por Andy; el recorte y el paisaje se prepararon para este portafolio, con detalles en `public/images/credits.txt`.
+
+## Laboratorio 15 CloudFormation y Docker
+
+El proyecto también incluye una plantilla actualizada de AWS CloudFormation en `infrastructure/ec2-docker.yaml`. La infraestructura crea:
+
+- Una instancia EC2 con Amazon Linux 2023.
+- Un grupo de seguridad con HTTP público y SSH opcional restringido.
+- Docker instalado automáticamente mediante `UserData`.
+- Una aplicación Nginx o este portafolio de Next.js dentro de un contenedor.
+
+La plantilla solicita una VPC y una subred pública existentes. El parámetro `ApplicationMode` permite realizar las dos etapas del laboratorio:
+
+- `nginx`: despliegue inicial con Nginx.
+- `portfolio`: compilación y despliegue del portafolio desde este repositorio.
+
+Al finalizar la práctica se debe eliminar el stack de CloudFormation para detener la instancia y evitar consumo innecesario.

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; --ink:#f5f8fc; --muted:#b6c6d5; --blue:#078cf5; --line:rgba(160,197,222,.16); }
+:root { color-scheme: dark; --ink:#f5f8fc; --muted:#b6c6d5; --blue:#078cf5; --line:rgba(160,197,222,.16); --font-inter:"Inter"; --font-brand:"Barlow Condensed"; }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; scroll-padding-top:35px; }
 body { margin:0; background:#061b28; color:var(--ink); font-family:var(--font-inter),Arial,sans-serif; padding:0; }

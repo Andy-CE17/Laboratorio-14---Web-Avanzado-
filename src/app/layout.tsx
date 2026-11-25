@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, Inter } from "next/font/google";
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/inter/latin-800.css";
+import "@fontsource/barlow-condensed/latin-800-italic.css";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { personalInfo } from "@/lib/data";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const brandFont = Barlow_Condensed({
-  subsets: ["latin"],
-  weight: "800",
-  style: "italic",
-  display: "swap",
-  variable: "--font-brand",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(personalInfo.siteUrl),
@@ -62,7 +53,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${inter.variable} ${brandFont.variable}`}>
+    <html lang="es">
       <body className="flex flex-col min-h-screen">
         <div className="portfolio-shell">
           <Header />

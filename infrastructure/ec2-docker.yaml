@@ -1,0 +1,155 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Laboratorio 15 - aplicacion Docker desplegada automaticamente en Amazon EC2
+
+Parameters:
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+    Description: Ultima AMI x86_64 disponible de Amazon Linux 2023.
+
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t3.micro
+    Description: Tipo de instancia para la demostracion.
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC donde se crearan el grupo de seguridad y la instancia.
+
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Description: Subred publica con salida a Internet y asignacion de IPv4 publica.
+
+  AllowedSshCidr:
+    Type: String
+    Default: ""
+    Description: CIDR autorizado para SSH, por ejemplo 203.0.113.10/32. Dejar vacio para deshabilitar SSH.
+
+  ApplicationMode:
+    Type: String
+    Default: nginx
+    AllowedValues:
+      - nginx
+      - portfolio
+    Description: Aplicacion Docker que se publicara en el puerto 80.
+
+  AppRepositoryUrl:
+    Type: String
+    Default: https://github.com/Andy-CE17/Laboratorio-14---Web-Avanzado-.git
+    Description: Repositorio publico que se compilara cuando ApplicationMode sea portfolio.
+
+  AppRepositoryRef:
+    Type: String
+    Default: lab15-cloudformation
+    Description: Rama o etiqueta del repositorio que se desplegara.
+
+Conditions:
+  EnableSsh: !Not
+    - !Equals
+      - !Ref AllowedSshCidr
+      - ""
+
+Resources:
+  WebSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Acceso HTTP publico y SSH opcional restringido
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: Aplicacion web publica
+        - !If
+          - EnableSsh
+          - IpProtocol: tcp
+            FromPort: 22
+            ToPort: 22
+            CidrIp: !Ref AllowedSshCidr
+            Description: Administracion SSH restringida
+          - !Ref AWS::NoValue
+      Tags:
+        - Key: Name
+          Value: Laboratorio15-Docker-SG
+        - Key: Laboratory
+          Value: "15"
+
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: "0"
+          GroupSet:
+            - !Ref WebSecurityGroup
+          SubnetId: !Ref SubnetId
+      MetadataOptions:
+        HttpEndpoint: enabled
+        HttpTokens: required
+      Tags:
+        - Key: Name
+          Value: Laboratorio15-Docker
+        - Key: Laboratory
+          Value: "15"
+        - Key: ManagedBy
+          Value: CloudFormation
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -euxo pipefail
+          exec > >(tee /var/log/lab15-bootstrap.log | logger -t user-data -s 2>/dev/console) 2>&1
+
+          sed -i 's/^[[:space:]]*- scripts-user$/  - [scripts-user, always]/' /etc/cloud/cloud.cfg
+
+          dnf update -y
+          dnf install -y docker git
+          systemctl enable --now docker
+
+          docker rm -f lab15-web || true
+
+          if [ '${ApplicationMode}' = 'portfolio' ]; then
+            rm -rf /opt/lab15-app
+            git clone --depth 1 --branch '${AppRepositoryRef}' '${AppRepositoryUrl}' /opt/lab15-app
+            docker build --tag lab15-portfolio:latest /opt/lab15-app
+            docker run -d \
+              --name lab15-web \
+              --restart unless-stopped \
+              -p 80:3000 \
+              -e NEXT_TELEMETRY_DISABLED=1 \
+              lab15-portfolio:latest
+          else
+            docker pull nginx:stable-alpine
+            docker run -d \
+              --name lab15-web \
+              --restart unless-stopped \
+              -p 80:80 \
+              nginx:stable-alpine
+          fi
+
+Outputs:
+  InstanceId:
+    Description: ID de la instancia EC2.
+    Value: !Ref WebServer
+
+  PublicIp:
+    Description: Direccion IPv4 publica de la instancia.
+    Value: !GetAtt WebServer.PublicIp
+
+  ApplicationUrl:
+    Description: URL publica de la aplicacion Docker.
+    Value: !Sub http://${WebServer.PublicIp}
+
+  SecurityGroupId:
+    Description: ID del grupo de seguridad creado.
+    Value: !Ref WebSecurityGroup
+
+  DeploymentMode:
+    Description: Aplicacion seleccionada para el despliegue.
+    Value: !Ref ApplicationMode
+
